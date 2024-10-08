@@ -1,0 +1,285 @@
+{% extends 'pcapp/base.html' %}
+{% load static %}
+
+{% block title %}
+{{instance.title}}
+{% endblock title%}
+{% block style %}
+{% endblock style %}
+
+{% block script %}  
+
+{% endblock script %}
+
+{% block mainbody %}
+
+
+  <div class="pagetitle">
+    <h1>Stores Branch Names</h1>
+   
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index/">Home</a></li>
+        <li class="breadcrumb-item">Material</li>
+        <li class="breadcrumb-item active"><a href="/Stores/">Stores Branch Names</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+    
+ 
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+
+            <div class="border-0 mb-4">
+              <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                  <h5 class="fw-bold mb-0"> Stores Branch Details </h5>
+                  <div class="col-auto d-flex w-sm-100">
+                      <button type="button" class="btn btn-dark btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#depadd"><i class="icofont-plus-circle me-2 fs-6"></i>Add Stores Branch</button>
+                  </div>
+                </div>
+            </div>
+
+            
+              <!-- Add Supplier Details-->
+              <div class="modal fade" id="depadd" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title  fw-bold" id="depaddLabel"> Add Stores Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/addStoresBranchNames/" method="POST">
+                      {% csrf_token %} 
+                      <div class="modal-body p-5">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="ABN" class="form-label">ABN</label>
+                            <input type="text" name="ABN" class="form-control" id="ABN" required>
+                            <div class="invalid-feedback">Please, enter Supplier Name !</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="supplier_id" class="form-label">Supplier ID</label>
+                            <select class="form-select" name="supplier_id" id="supplier_id" aria-label="Floating label select example" required>
+                                <option selected disabled value="">select Supplier ID</option>
+                                {% for msd in materialsupplierdata %}
+                                <option value={{msd.supplier_id}}>{{msd.supplier_id}}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="store_id" class="form-label">Store ID</label>
+                            <input type="text" name="store_id" class="form-control" id="store_id" required>
+                            <div class="invalid-feedback">Please, enter Store ID !</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="branch_name" class="form-label">Branch Name</label>
+                            <input type="text" name="branch_name" class="form-control" id="branch_name" required>
+                            <div class="invalid-feedback">Please, enter Branch name!</div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="address" class="form-label">Branch Address</label>
+                            <input type="text" name="address" class="form-control" id="address" required>
+                            <div class="invalid-feedback">Please, enter Branch Address!</div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-6">
+                              <label for="region_of_operation" class="form-label">Region of  Operation</label>
+                              <input type="text" name="region_of_operation" class="form-control" id="region_of_operation" required>
+                              <div class="invalid-feedback">Please, enter region of operation !</div>
+                            </div>
+                            <div class="col-6">
+                              <label for="branch_contact" class="form-label">Branch Contact</label>
+                              <input type="text" name="branch_contact" class="form-control" id=" " required>
+                              <div class="invalid-feedback">Please, enter Branch Contact!</div>
+                            </div>
+                          </div>
+                        <div class="col-12">
+                          <label for="email" class="form-label">Email</label>
+                          <div class="input-group has-validation">
+                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            <input type="email" name="email" class="form-control" id="email" required>
+                            <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="phone" class="form-label">Phone No.</label>
+                            <input type="text" name="phone" class="form-control" id="phone" required>
+                            <div class="invalid-feedback">Please, enter Phone No.!</div>
+                        </div>
+                        
+                        <div class="col-12 text-center">
+                        </br><button class="btn btn-outline-primary" type="submit">Add Stores Branch</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                </div>
+              </div>
+              <!-- End of Add employee-->
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>ABN</th>
+                      <th>supplier_id</th> 
+                      <th>store_id</th> 
+                      <th>branch_name</th> 
+                      <th>address</th> 
+                      <th>region_of_operation</th>   
+                      <th>branch_contact</th>  
+                      <th>phone</th>  
+                      <th>email</th> 
+                      <th>Actions</th>  
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for sbd in storebranchdata %}
+                  <tr>
+                      <td>
+                          <span class="fw-bold">{{sbd.ABN}}</span>
+                      </td>
+                     <td>
+                         <span class="fw-bold ms-1">{{sbd.supplier_id.supplier_id}}</span>
+                     </td>
+                     <td>
+                      {{sbd.store_id}}
+                     </td>
+                     <td>
+                      {{sbd.branch_name}}
+                     </td>
+                     <td>
+                      {{sbd.address}}
+                     </td>
+                     <td>
+                      {{sbd.region_of_operation}}
+                     </td>
+                     <td>
+                      {{sbd.branch_contact}}
+                     </td>
+                     <td>
+                      {{sbd.phone}}
+                     </td>
+                     <td>
+                      {{sbd.email}}
+                     </td>
+                      <td>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn bi-pen" data-bs-toggle="modal" data-bs-target="#depedit" data-sABN="{{sbd.ABN}}" data-ssupplier_id="{{sbd.supplier_id.supplier_id}}" data-sstore_id="{{sbd.store_id}}" data-sbranch_name="{{sbd.branch_name}}" data-saddress="{{sbd.address}}" data-sregion_of_operation="{{sbd.region_of_operation}}" data-sbranch_contact="{{sbd.branch_contact}}"  data-sphone="{{sbd.phone}}"  data-semail="{{sbd.email}}" onclick="populateModal_StoresBranchNames(this)">
+                              <i class="icofont-edit text-success"></i>
+                            </button>
+                            <form action="/delete_StoresBranchNames/{{sbd.ABN}}/" method="POST" enctype='multipart/form-data'> 
+                              {% csrf_token %}
+                              <button type="submit" onclick="return confirm('Are you sure you want to Delete this Employee ?');" class="btn bi-trash"><i class="icofont-ui-delete text-danger"></i></button>
+                            </form>
+                          </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+
+            </table>
+              <!-- Edit Employee-->
+              <div class="modal fade" id="depedit" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title  fw-bold" id="depaddLabel"> Edit Store Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/editStoresBranchNames/" method="POST">
+                  {% csrf_token %} 
+                  <div class="modal-body p-5">
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="ABN" class="form-label">ABN</label>
+                        <input type="text" name="ABN" class="form-control" id="sABN" readonly>
+                        <div class="invalid-feedback">Please, enter Supplier Name !</div>
+                      </div>
+                      <div class="col-6">
+                        <label for="supplier_id" class="form-label">Supplier ID</label>
+                        <input type="text" name="supplier_id" class="form-control" id="ssupplier_id" readonly>
+                        <div class="invalid-feedback">select Supplier ID!</div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="store_id" class="form-label">Store ID</label>
+                        <input type="text" name="store_id" class="form-control" id="sstore_id" required>
+                        <div class="invalid-feedback">Please, enter Store ID !</div>
+                      </div>
+                      <div class="col-6">
+                        <label for="branch_name" class="form-label">Branch Name</label>
+                        <input type="text" name="branch_name" class="form-control" id="sbranch_name" required>
+                        <div class="invalid-feedback">Please, enter Branch name!</div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="address" class="form-label">Branch Address</label>
+                        <input type="text" name="address" class="form-control" id="saddress" required>
+                        <div class="invalid-feedback">Please, enter Branch Address!</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                          <label for="region_of_operation" class="form-label">Region of  Operation</label>
+                          <input type="text" name="region_of_operation" class="form-control" id="sregion_of_operation" required>
+                          <div class="invalid-feedback">Please, enter region of operation !</div>
+                        </div>
+                        <div class="col-6">
+                          <label for="branch_contact" class="form-label">Branch Contact</label>
+                          <input type="text" name="branch_contact" class="form-control" id="sbranch_contact" required>
+                          <div class="invalid-feedback">Please, enter Branch Contact!</div>
+                        </div>
+                      </div>
+                    <div class="col-12">
+                      <label for="email" class="form-label">Email</label>
+                      <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        <input type="email" name="email" class="form-control" id="semail" required>
+                        <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="phone" class="form-label">Phone No.</label>
+                        <input type="text" name="phone" class="form-control" id="sphone" required>
+                        <div class="invalid-feedback">Please, enter Phone No.!</div>
+                    </div>
+                    <div class="col-12 text-center">
+                    </br><button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+                </div>
+              </div> 
+
+              
+
+
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+   
+    
+  </section>
+
+
+  
+{% endblock mainbody %}
+{% block footer %}
+  
+
+{% endblock footer %}
+ 

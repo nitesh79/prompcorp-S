@@ -1,0 +1,349 @@
+{% extends 'pcapp/base.html' %}
+{% load static %}
+
+{% block title %}
+{{instance.title}}
+{% endblock title%}
+{% block style %}
+{% endblock style %}
+
+{% block script %}  
+ 
+{% endblock script %}
+
+{% block mainbody %}
+
+
+  
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-info alert-dismissible fade show position-fixed top-0 end-0 p-3" role="alert" style="z-index: 1050" id="floatingAlert">
+        {{message}}
+      </div>
+
+      <script>
+        setTimeout(function() {
+            var alertEleme nt = document.getElementById('floatingAlert');
+            var bsAlert = new bootstrap.Alert(alertElement);
+            bsAlert.close();
+        }, 5000); // 3 seconds
+      </script>
+    {% endfor %}
+  {% endif %}
+
+
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index/">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+
+  <section class="section dashboard">
+    <div class="row">
+
+      <!-- Left side columns -->
+      <div class="col-lg-8">
+        <div class="row">
+
+          <!-- Reports -->
+          <div class="col-12">
+            <div class="card">
+
+              <div class="card-body">
+                <h5 class="card-title">Department <span></span></h5>
+                <div style="display: flex; justify-content: space-between;">
+                <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:45%" float="left">
+                  <thead>
+                      <tr>
+                          <th><a href="/EmployeeDepartment/">Employee List </a></th> 
+                      </tr>
+                  </thead>
+    
+                  <tbody>
+                    {% for ed in empdata %}
+                      <tr>
+                         <td>
+                             <span class="fw-bold ms-1">{{ed.employee_name}}</span>
+                         </td>
+                        </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+                <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:45%" float="left">
+                  <thead>
+                      <tr>
+                          <th><a href="/Department/">Department List</a></th>  
+                      </tr>
+                  </thead>
+    
+                  <tbody>
+                    {% for de in deptdata %}
+                      <tr>
+                         <td>
+                             <span class="fw-bold ms-1">{{de.department_name}}</span>
+                         </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+                </div>
+                <!-- Line Chart -->
+                <div id="reportsChart"></div>
+
+                
+
+              </div>
+
+            </div>
+          </div><!-- End Reports -->
+
+          <!-- Recent Sales -->
+          <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+
+              <div class="card-body">
+                <h5 class="card-title">Timesheet <span>| Today</span></h5>
+
+                <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+                  <thead>
+                      <tr>
+                          <th>Department</th>
+                          <th>Employee</th>
+                          <th>Date</th> 
+                          <th>Working Hours</th> 
+                          <th>Start Time</th>   
+                          <th>End Time</th>  
+                      </tr>
+                  </thead>
+    
+                  <tbody>
+                    {% for td in timesheetdata %}
+                      <tr>
+                          <td>
+                              <span class="fw-bold">{{td.department_id}}</span>
+                          </td>
+                          <td>
+                              <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="ID:{{td.employee_id.employee_id}}, Name:{{td.employee_id.employee_name}}, Phone:{{td.employee_id.employee_phone}}, Email:{{td.employee_id.employee_email}}" class="fw-bold">{{td.employee_id}}</span>
+                          </td>
+                         <td>
+                          {{td.date|date:"Y-m-d"}}
+                         </td>
+                         <td>
+                          {{td.working_hours}}
+                         </td>
+                         <td>
+                          {{td.start_time}}
+                         </td>
+                         <td>
+                          {{td.end_time}}
+                         </td>
+                        </tr>
+                      {% endfor %}
+                  </tbody>
+    
+                </table>
+
+
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Sales -->
+
+          <!-- Top Selling -->
+          <div class="col-12">
+            <div class="card top-selling overflow-auto">
+
+
+              <div class="card-body pb-0">
+                <h5 class="card-title">Clients <span></span></h5>
+
+                <div style="display: flex; justify-content: space-between;">
+                  <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:45%" float="left">
+                    <thead>
+                        <tr>
+                            <th><a href="/ClientGroup/">Client List </a></th> 
+                        </tr>
+                        <tr>
+                          <th>Industry</th> 
+                          <th>Company Name</th> 
+                        </tr>
+                    </thead>
+      
+                    <tbody>
+                      {% for cg in clientgroupdata %}
+                        <tr>
+                          
+                          <td>
+                            <span class="fw-bold ms-1">{{cg.industry}}</span>
+                          </td>
+                           <td>
+                               <span class="fw-bold ms-1">{{cg.company_name}}</span>
+                           </td>
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                  <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:45%" float="left">
+                    <thead>
+                        <tr><th><a href="/Account/">Account list</a></th></tr>
+                        <tr>
+                          <th>Account Number</th>
+                          <th>Account Names</th>  
+                        </tr>
+                    </thead>
+      
+                    <tbody>
+                      {% for ad in accountdata %}
+                        <tr>
+                          <td>
+                            <span class="fw-bold">{{ad.account_number}}</span>
+                          </td>
+                          <td>
+                              <span class="fw-bold ms-1">{{ad.account_name}}</span>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                  </div>
+                
+
+
+
+              </div>
+
+            </div>
+          </div><!-- End Top Selling -->
+
+        </div>
+      </div><!-- End Left side columns -->
+
+      <!-- Right side columns -->
+      <div class="col-lg-4">
+
+        <!-- Recent Activity -->
+        <div class="card overflow-auto">
+
+          <div class="card-body overflow-auto ">
+            <h5 class="card-title">Material Invoices <span></span></h5>
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                <tr>
+                  <th><a href="/MaterialInvoice/">Invoices</a></th> 
+                </tr>
+                  <tr>
+                      <th>ID</th>
+                      <th>Items</th> 
+                      <th>Qty</th> 
+                      <th>Price</th> 
+                      <th>T_Price</th>   
+                      <th>Approver</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for mid in matinvoicedata %}
+                  <tr>
+                      <td>
+                        <span class="fw-bold" >{{mid.invoice_id}}</span>
+                      </td>
+                     <td>
+                      {{mid.items}}
+                     </td>
+                     <td>
+                      {{mid.quantity}}
+                     </td>
+                     <td>
+                      {{mid.individual_price}}
+                     </td>
+                     <td>
+                      {{mid.total_price}}
+                     </td>
+                     <td>
+                      {{mid.approver}}
+                     </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div><!-- End Recent Activity -->
+
+        <!-- Budget Report -->
+        <div class="card overflow-auto">
+
+          <div class="card-body overflow-auto ">
+            <h5 class="card-title">Deals <span></span></h5> 
+
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                
+                <tr>
+                  <th><a href="/Deals/">Deals_List</a></th> 
+                </tr>
+                  <tr>
+                      <th>Deal ID</th>
+                      <th>Acc</th> 
+                      <th>Name</th>   
+                      <th>Pricing</th>   
+                      <th>Duration</th> 
+                      <th>Status</th> 
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for dd in dealdata %}
+                  <tr>
+                      <td>
+                          <span class="fw-bold">{{dd.deal_id}}</span>
+                      </td>
+                     <td>
+                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Account No.:{{dd.account_number.account_number}}, Client ID:{{dd.account_number.client_id.client_id}}, Account Name:{{dd.account_number.account_name}}, Account Role:{{dd.account_number.account_role}}, Location:{{dd.account_number.location}}, ABN:{{dd.account_number.abn}}" class="fw-bold">{{dd.account_number.account_number}}</span>
+                    </td>
+                     <td>
+                      {{dd.deal_name}}
+                     </td>
+                     <td>
+                      {{dd.pricing}}
+                     </td>
+                     <td>
+                      {{dd.duration}}
+                     </td>
+                     <td>
+                      {{dd.deal_status}}
+                     </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+
+            </table>
+
+
+          </div>
+        </div><!-- End Budget Report -->
+
+
+
+      </div><!-- End Right side columns -->
+
+    </div>
+  </section>
+
+
+
+
+
+
+{% endblock mainbody %}
+{% block footer %}
+  
+
+{% endblock footer %}
+ 

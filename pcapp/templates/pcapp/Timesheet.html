@@ -1,0 +1,263 @@
+{% extends 'pcapp/base.html' %}
+{% load static %}
+
+{% block title %}
+{{instance.title}}
+{% endblock title%}
+{% block style %}
+{% endblock style %}
+
+{% block script %}  
+
+{% endblock script %}
+
+{% block mainbody %}
+
+
+  <div class="pagetitle">
+    <h1>Employee Timesheet Details</h1>
+   
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index/">Home</a></li>
+        <li class="breadcrumb-item">Department</li>
+        <li class="breadcrumb-item active"><a href="/Timesheet/"><b>Timesheet</b></a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+    
+ 
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+
+            <div class="border-0 mb-4">
+              <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                  <h5 class="fw-bold mb-0"> Employee Timesheet Details </h5>
+                  <div class="col-auto d-flex w-sm-100">
+                      <button type="button" class="btn btn-dark btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#depadd"><i class="icofont-plus-circle me-2 fs-6"></i>Add Timesheet</button>
+                  </div>
+                </div>
+            </div>
+
+            
+              <!-- Add employee-->
+              <div class="modal fade" id="depadd" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title  fw-bold" id="depaddLabel"> Add Empoloyee Timesheet </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/addTimesheet/" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %} 
+                      <div class="modal-body p-5">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="department_id" class="form-label">Department ID</label>
+                            <select class="form-select" name="department_id" id="department_id" aria-label="Floating label select example" required>
+                                <option selected disabled value="">select Department ID</option>
+                                {% for deptd in departmentdata %}
+                                <option value={{deptd.department_id}}>{{deptd.department_id}}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                          <div class="col-6">
+                            <label for="employee_id" class="form-label">Employee ID</label>
+                            <select class="form-select" name="employee_id" id="employee_id" aria-label="Floating label select example" required>
+                                <option selected disabled value="">select Employee ID</option>
+                                {% for ed in employeedata %}
+                                <option value={{ed.employee_id}}>{{ed.employee_id}}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                              <label for="date" class="form-label">Date</label>
+                              <input type="date" name="date" class="form-control" id="tdate" required>
+                              <div class="invalid-feedback">Please, select Date !</div>
+                            </div>
+                            <div class="col-6">
+                              <label for="working_hours" class="form-label">Working Hours</label>
+                              <input type="number" name="working_hours" class="form-control" id="working_hours" required>
+                              <div class="invalid-feedback">Please, enter Total working hours !</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                              <label for="start_time" class="form-label">Start Time</label>
+                              <input type="time" name="start_time" class="form-control" id="start_time" required>
+                              <div class="invalid-feedback">Please, select Start Time !</div>
+                            </div>
+                            <div class="col-6">
+                              <label for="end_time" class="form-label">End Time</label>
+                              <input type="time" name="end_time" class="form-control" id="end_time" required>
+                              <div class="invalid-feedback">Please, Please Select End Time !</div>
+                            </div>
+                            <div class="col-6">
+                              <label for="end_time" class="form-label">Upload Photos</label>
+                              <input type="file" name="photos" class="form-control" id="photos">
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                        </br><button class="btn btn-outline-primary" type="submit">Add Employee</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                </div>
+              </div>
+              <!-- End of Add employee-->
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Department</th>
+                      <th>Employee</th>
+                      <th>Date</th> 
+                      <th>Working Hours</th> 
+                      <th>Start Time</th>   
+                      <th>End Time</th>  
+                      <th>Photos</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for td in timesheetdata %}
+                  <tr>
+                      <td>
+                          <span class="fw-bold">{{td.department_id}}</span>
+                      </td>
+                      <td>
+                          <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="ID:{{td.employee_id.employee_id}}, Name:{{td.employee_id.employee_name}}, Phone:{{td.employee_id.employee_phone}}, Email:{{td.employee_id.employee_email}}" class="fw-bold">{{td.employee_id}}</span>
+                      </td>
+                     <td>
+                      {{td.date|date:"Y-m-d"}}
+                     </td>
+                     <td>
+                      {{td.working_hours}}
+                     </td>
+                     <td>
+                      {{td.start_time}}
+                     </td>
+                     <td>
+                      {{td.end_time}}
+                     </td>
+                     
+                     <td>
+                
+                      {% if td.myfile %}
+                        <img src="{{ base_url }}/media/{{ td.myfile }}" alt="Timesheet File" style="max-width: 100px;">
+                      {% else %}
+                        <p>No file uploaded.</p>
+                      {% endif %}
+                     </td>
+                      <td>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn bi-pen" data-bs-toggle="modal" data-bs-target="#depedit" data-t_id="{{td.id}}"  data-department_id="{{td.department_id}}"  data-employee_id="{{td.employee_id}}" data-date="{{td.date|date:'Y-m-d'}}" data-working_hours="{{td.working_hours}}" data-start_time="{{td.start_time|time:'H:i:s'}}"  data-end_time="{{td.end_time|time:'H:i:s'}}" onclick="populateModal_timesheet(this)">
+                              <i class="icofont-edit text-success"></i>
+                            </button>
+                            <form action="/delete_timesheet/{{td.id}}/" method="POST" enctype='multipart/form-data'> 
+                              {% csrf_token %}
+                              <button type="submit" onclick="return confirm('Are you sure you want to Delete this Employee ?');" class="btn bi-trash"><i class="icofont-ui-delete text-danger"></i></button>
+                            </form>
+                          </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+
+            </table>
+              <!-- Edit timesheet-->
+              <div class="modal fade" id="depedit" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title  fw-bold" id="depaddLabel"> Edit  Empoloyee Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/edittimesheet/" method="POST">
+                  {% csrf_token %} 
+                  <div class="modal-body p-5">
+                    <div class="row">
+                        <div class="col-6">
+                          <label for="department_id" class="form-label">Department ID</label>
+                          <input list="datalistOptions_dept"  name="department_id" class="form-control" id="tdepartment_id" placeholder="Department id" readonly>
+                          <div class="invalid-feedback">Please, enter Department ID !</div>
+                          <datalist id="datalistOptions_dept">
+                              {% for deptd in departmentdata %}
+                              <option value={{deptd.department_id}}>
+                              {% endfor %}
+                          </datalist>
+                        </div>
+                        <div class="col-6">
+                          <label for="employee_id" class="form-label">Employee ID</label>
+                          <input list="datalistOptions_employee" name="employee_id" class="form-control" id="temployee_id" readonly>
+                          <div class="invalid-feedback">Please, enter Employee ID !</div>
+                          <datalist id="datalistOptions_employee">
+                              {% for ed in employeedata %}
+                              <option value={{ed.employee_id}}>
+                              {% endfor %}
+                          </datalist>
+                        </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-6">
+                            <label for="working_hours" class="form-label">Date</label>
+                            <input type="text" name="ttdate" class="form-control" id="ttdate" readonly>
+                            <div class="invalid-feedback">Please, enter Date!</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="working_hours" class="form-label">Working Hours</label>
+                            <input type="number" name="working_hours" class="form-control" id="tworking_hours" required>
+                            <div class="invalid-feedback">Please, enter Total working hours !</div>
+                          </div>
+                          <input type="hidden" name="tid" class="form-control" id="tid" required>
+                            
+                      </div>
+                      <div class="row">
+                          <div class="col-6">
+                            <label for="start_time" class="form-label">Start Time</label>
+                            <input type="text" name="start_time" class="form-control" id="tstart_time" required>
+                            <div class="invalid-feedback">Please, select Start Time !</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="end_time" class="form-label">End Time</label>
+                            <input type="text" name="end_time" class="form-control" id="tend_time" required>
+                            <div class="invalid-feedback">Please, Please Select End Time !</div>
+                          </div>
+                      </div>
+                    <div class="col-12 text-center">
+                    </br><button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+                </div>
+              </div> 
+
+              
+
+
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+   
+    
+  </section>
+
+
+  
+{% endblock mainbody %}
+{% block footer %}
+  
+
+{% endblock footer %}
+ 

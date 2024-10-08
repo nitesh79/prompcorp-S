@@ -1,0 +1,259 @@
+{% extends 'pcapp/base.html' %}
+{% load static %}
+
+{% block title %}
+{{instance.title}}
+{% endblock title%}
+{% block style %}
+{% endblock style %}
+
+{% block script %}  
+
+{% endblock script %}
+
+{% block mainbody %}
+
+  <div class="pagetitle">
+    <h1>Deals Details</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index/">Home</a></li>
+        <li class="breadcrumb-item">Client and Contract</li>
+        <li class="breadcrumb-item active"><a href="/Deals/">Deals</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+    
+ 
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+
+            <div class="border-0 mb-4">
+              <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                  <h5 class="fw-bold mb-0"> Deals Details </h5>
+                  <div class="col-auto d-flex w-sm-100">
+                      <button type="button" class="btn btn-dark btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#depadd"><i class="icofont-plus-circle me-2 fs-6"></i>Add Deals</button>
+                  </div>
+                </div>
+            </div>
+
+            
+              <!-- Add Deals-->
+              <div class="modal fade" id="depadd" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title  fw-bold" id="depaddLabel"> Add Deals </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/addDeals/" method="POST">
+                      {% csrf_token %} 
+                      <div class="modal-body p-5">
+                         <div class="row">
+                          <div class="col-6">
+                            <label for="deal_id" class="form-label">Deals ID</label>
+                            <input type="text" name="deal_id" class="form-control" id="deal_id" required>
+                            <div class="invalid-feedback">Please, enter Deals ID !</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="account_number" class="form-label">Account Number</label>
+                            <select class="form-select" name="account_number" id="account_number" aria-label="Floating label select example" required>
+                                <option selected disabled value="">select Account Number</option>
+                                {% for accdata in accountdata %}
+                                <option value={{accdata.account_number}}>{{accdata.account_number}}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                         </div>
+                         
+                          <div class="col-12">
+                            <label for="deal_name" class="form-label">Deal Name</label>
+                            <input type="text" name="deal_name" class="form-control" id="deal_name" required>
+                            <div class="invalid-feedback">Please, enter Deal Name!</div>
+                          </div>
+                         <div class="row">
+                          <div class="col-6">
+                            <label for="pricing" class="form-label">Pricing</label>
+                            <input type="text" name="pricing" class="form-control" id="pricing" required>
+                            <div class="invalid-feedback">Please, enter Price!</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="duration" class="form-label">Duration</label>
+                            <input type="text" name="duration" class="form-control" id="duration" required>
+                            <div class="invalid-feedback">Please, enter duration!</div>
+                          </div>
+                         </div>
+                          
+                          <div class="col-12">
+                            <label for="SLAs" class="form-label">SLAs</label>
+                            <input type="textarea" name="SLAs" class="form-control" id="SLAs" required>
+                            <div class="invalid-feedback">Please, enter SLA!</div>
+                          </div>
+                          <div class="col-12">
+                            <label for="deal_status" class="form-label">Deal Status</label>
+                            <input type="textarea" name="deal_status" class="form-control" id="deal_status" required>
+                            <div class="invalid-feedback">Please, enter Deal Status!</div>
+                          </div>
+                        <div class="col-12 text-center">
+                        </br><button class="btn btn-outline-primary" type="submit">Add ClientContact</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                </div>
+              </div>
+              <!-- End of Add ClientGroup-->
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Deal ID</th>
+                      <th>Account Number</th> 
+                      <th>Deal Name</th>   
+                      <th>Pricing</th>   
+                      <th>Duration</th>   
+                      <th>SLA</th>   
+                      <th>Deal Status</th>   
+                      <th>Last Updated</th>   
+                      <th>First Created</th>   
+                      <th>Actions</th>  
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for dd in dealdata %}
+                  <tr>
+                      <td>
+                          <span class="fw-bold">{{dd.deal_id}}</span>
+                      </td>
+                     <td>
+                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Account No.:{{dd.account_number.account_number}}, Client ID:{{dd.account_number.client_id.client_id}}, Account Name:{{dd.account_number.account_name}}, Account Role:{{dd.account_number.account_role}}, Location:{{dd.account_number.location}}, ABN:{{dd.account_number.abn}}" class="fw-bold">{{dd.account_number.account_number}}</span>
+                    </td>
+                     <td>
+                      {{dd.deal_name}}
+                     </td>
+                     <td>
+                      {{dd.pricing}}
+                     </td>
+                     <td>
+                      {{dd.duration}}
+                     </td>
+                     <td>
+                      {{dd.SLAs}}
+                     </td>
+                     <td>
+                      {{dd.deal_status}}
+                     </td>
+                     <td>
+                      {{dd.updated}}
+                     </td>
+                     <td>
+                      {{dd.Created_on}}
+                     </td>
+                      <td>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn bi-pen" data-bs-toggle="modal" data-bs-target="#depedit" data-ddeal_id="{{dd.deal_id}}" data-ddeal_name="{{dd.deal_name}}" data-daccount_number="{{dd.account_number}}"  data-dpricing="{{dd.pricing}}"  data-dduration="{{dd.duration}}" data-dSLAs="{{dd.SLAs}}"    data-ddeal_status="{{dd.deal_status}}"  onclick="populateModal_deals(this)">
+                              <i class="icofont-edit text-success"></i>
+                            </button>
+                            <form action="/delete_deals/{{dd.deal_id}}/" method="POST" enctype='multipart/form-data'> 
+                              {% csrf_token %}
+                              <button type="submit" onclick="return confirm('Are you sure you want to Delete this Department ?');" class="btn bi-trash"><i class="icofont-ui-delete text-danger"></i></button>
+                            </form>
+                          </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+
+            </table>
+              <!-- Edit Department-->
+              <div class="modal fade" id="depedit" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title  fw-bold" id="depaddLabel"> Edit Deals Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/editDeals/" method="POST">
+                    {% csrf_token %} 
+                    <div class="modal-body p-5">
+                        <div class="row">
+                         <div class="col-6">
+                           <label for="deal_id" class="form-label">Deals ID</label>
+                           <input type="text" name="deal_id" class="form-control" id="ddeal_id" readonly>
+                           <div class="invalid-feedback">Please, enter Deals ID !</div>
+                         </div>
+                         <div class="col-6">
+                           <label for="account_number" class="form-label">Account Number</label>
+                           <input list="datalistOptions_account" name="account_number" class="form-control" id="daccount_number" readonly>
+                           <div class="invalid-feedback">Please, select Account Number!</div>
+                           <datalist id="datalistOptions_account">
+                               {% for accdata in accountdata %}
+                               <option value={{accdata.account_number}}>
+                               {% endfor %}
+                           </datalist>
+                         </div>
+                        </div>
+                        
+                         <div class="col-12">
+                           <label for="deal_name" class="form-label">Deal Name</label>
+                           <input type="text" name="deal_name" class="form-control" id="ddeal_name" required>
+                           <div class="invalid-feedback">Please, enter Deal Name!</div>
+                         </div>
+                        <div class="row">
+                         <div class="col-6">
+                           <label for="pricing" class="form-label">Pricing</label>
+                           <input type="text" name="pricing" class="form-control" id="dpricing" required>
+                           <div class="invalid-feedback">Please, enter Price!</div>
+                         </div>
+                         <div class="col-6">
+                           <label for="duration" class="form-label">Duration</label>
+                           <input type="text" name="duration" class="form-control" id="dduration" required>
+                           <div class="invalid-feedback">Please, enter duration!</div>
+                         </div>
+                        </div>
+                         
+                         <div class="col-12">
+                           <label for="SLAs" class="form-label">SLAs</label>
+                           <input type="textarea" name="SLAs" class="form-control" id="dSLAs" required>
+                           <div class="invalid-feedback">Please, enter SLA!</div>
+                         </div>
+                         <div class="col-12">
+                           <label for="deal_status" class="form-label">Deal Status</label>
+                           <input type="textarea" name="deal_status" class="form-control" id="ddeal_status" required>
+                           <div class="invalid-feedback">Please, enter Deal Status!</div>
+                         </div>
+                       <div class="col-12 text-center">
+                       </br><button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                       </div>
+                     </div>
+                </form>
+                </div>
+                </div>
+              </div> 
+
+              
+
+
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+   
+    
+  </section>
+
+
+  
+{% endblock mainbody %}
+{% block footer %}
+  
+
+{% endblock footer %}
+ 

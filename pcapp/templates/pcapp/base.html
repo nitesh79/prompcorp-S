@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>prompcorp</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'pcapp/assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'pcapp/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'pcapp/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'pcapp/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'pcapp/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'pcapp/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'pcapp/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'pcapp/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'pcapp/assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'pcapp/assets/css/style.css' %}" rel="stylesheet">
+
+  {% block style %}     {% endblock style %}
+
+
+
+</head>
+<body>
+
+	{% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-info alert-dismissible fade show position-fixed top-0 end-0 p-3" role="alert" style="z-index: 1050" id="floatingAlert">
+        {{message}}
+      </div>
+    
+      <script>
+        setTimeout(function() {
+            var alertElement = document.getElementById('floatingAlert');
+            var bsAlert = new bootstrap.Alert(alertElement);
+            bsAlert.close();
+        }, 5000); // 3 seconds
+      </script>
+    {% endfor %}
+  {% endif %}
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/index/" class="logo d-flex align-items-center">
+        <img src="{% static 'pcapp/assets/img/logo.png' %}" alt="">
+        <span class="d-none d-lg-block" >PrompCorp</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="GET" action="#">
+        <input type="text" name="q" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">4</span>
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              You have 4 new notifications
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Lorem Ipsum</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>30 min. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-x-circle text-danger"></i>
+              <div>
+                <h4>Atque rerum nesciunt</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>1 hr. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-check-circle text-success"></i>
+              <div>
+                <h4>Sit rerum fuga</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>2 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-info-circle text-primary"></i>
+              <div>
+                <h4>Dicta reprehenderit</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>4 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+              <a href="#">Show all notifications</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="badge bg-success badge-number">3</span>
+          </a><!-- End Messages Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">
+              You have 3 new messages
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="{% static 'pcapp/assets/img/messages-1.jpg' %}" alt="" class="rounded-circle">
+                <div>
+                  <h4>Maria Hudson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>4 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="{% static 'pcapp/assets/img/messages-2.jpg' %}" alt="" class="rounded-circle">
+                <div>
+                  <h4>Anna Nelson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>6 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="{% static 'pcapp/assets/img/messages-3.jpg' %}" alt="" class="rounded-circle">
+                <div>
+                  <h4>David Muldon</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>8 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="dropdown-footer">
+              <a href="#">Show all messages</a>
+            </li>
+
+          </ul><!-- End Messages Dropdown Items -->
+
+        </li><!-- End Messages Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{% static 'pcapp/assets/img/profile1-img.jpg' %}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{userdata.name}} </span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{% if user.is_active %}{{user.name}}{% endif %}</h6>
+			  {{user.email}}<br>
+              <span>{% if user.is_admin %} Admin {% elif user.is_active %} staff {% else %} {% endif %}</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/userprofile/">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/logout/">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="/index/">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Department</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/EmployeeDepartment/">
+              <i class="bi bi-circle"></i><span>Employee</span>
+            </a>
+          </li>          
+          <li>
+            <a href="/Department/">
+              <i class="bi bi-circle"></i><span>Department</span>
+            </a>
+          </li>
+          <li>
+            <a href="/Timesheet/">
+              <i class="bi bi-circle"></i><span>Timesheet</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Client</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/ClientGroup/">
+              <i class="bi bi-circle"></i><span>Client Group</span>
+            </a>
+          </li>
+          <li>
+            <a href="/ClientContact/">
+              <i class="bi bi-circle"></i><span>Client Contact</span>
+            </a>
+          </li>
+          <li>
+          <li>
+            <a href="/Account/">
+              <i class="bi bi-circle"></i><span>Client Account</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Tables Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Contract</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/Deals/">
+              <i class="bi bi-circle"></i><span>Deals</span>
+            </a>
+          </li>
+          <li>
+            <a href="/Contract/">
+              <i class="bi bi-circle"></i><span>Contract</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Material</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/MaterialSupplier/">
+              <i class="bi bi-circle"></i><span>Material Supplier</span>
+            </a>
+          </li>
+          <li>
+            <a href="/Stores/">
+              <i class="bi bi-circle"></i><span>Stores</span>
+            </a>
+          </li>
+          <li>
+          <li>
+            <a href="/MaterialInvoice/">
+              <i class="bi bi-circle"></i><span>Material Invoice</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Icons Nav -->
+
+      <li class="nav-heading">Other Pages</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-question-circle"></i>
+          <span>F.A.Q</span>
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-envelope"></i>
+          <span>Contact</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+
+
+  <main id="main" class="main">
+
+
+	{% block mainbody %}
+    
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info alert-dismissible fade show position-fixed top-0 end-0 p-3" role="alert" style="z-index: 1050" id="floatingAlert">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span>{{message}} &nbsp;&nbsp;&nbsp;  </span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+
+
+	{% endblock mainbody %}
+
+</main><!-- End #main -->
+
+
+<footer id="footer" class="footer">
+	{% block footer %}
+  
+
+	{% endblock footer %}
+    <div class="copyright">
+      &copy; Copyright <strong><span>Prompcorp 2023</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed for <a href="https://bootstrapmade.com/">FacilityManagement</a>
+    </div>
+  </footer><!-- End Footer -->
+  
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a> 
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <!-- Vendor JS Files -->
+  <script src="{% static 'pcapp/assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script src="{% static 'pcapp/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'pcapp/assets/vendor/chart.js/chart.umd.js' %}"></script>
+  <script src="{% static 'pcapp/assets/vendor/echarts/echarts.min.js' %}"></script>
+  <script src="{% static 'pcapp/assets/vendor/quill/quill.js' %}"></script>
+  <script src="{% static 'pcapp/assets/vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src="{% static 'pcapp/assets/vendor/tinymce/tinymce.min.js' %}"></script>
+  <script src="{% static 'pcapp/assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'pcapp/assets/js/main.js' %}"></script>
+  
+  <script>
+    function populateModal(button) {
+      var employeeId = button.getAttribute('data-id'); // Extract info from data-* attributes
+      var employeeName = button.getAttribute('data-name');
+      var employeePhone = button.getAttribute('data-phone');
+      var employeeEmail = button.getAttribute('data-email');
+
+      var deptid = button.getAttribute('data-deptid');
+      var deptname = button.getAttribute('data-deptname');
+      // Populate the modal fields with the data
+    // Populate the modal fields with the data
+      document.getElementById('employee_id').value = employeeId;
+      document.getElementById('employee_name').value = employeeName;
+      document.getElementById('employee_phone').value = employeePhone;
+      document.getElementById('employee_email').value = employeeEmail;
+
+      document.getElementById('department_id').value = deptid;
+      document.getElementById('department_name').value = deptname;
+    }
+    function populateModal_dept(button) {
+
+      var deptid = button.getAttribute('data-deptid');
+      var deptname = button.getAttribute('data-deptname');
+
+      document.getElementById('department_id').value = deptid;
+      document.getElementById('department_name').value = deptname;
+    }
+    function populateModal_timesheet(button) {
+
+      var tid = button.getAttribute('data-t_id');
+      var deptid = button.getAttribute('data-department_id');
+      var empid = button.getAttribute('data-employee_id');
+      var tdate = button.getAttribute('data-date');
+      var tworkinghours = button.getAttribute('data-working_hours');
+      var tstartime = button.getAttribute('data-start_time');
+      var tendtime = button.getAttribute('data-end_time');
+
+      document.getElementById('tid').value = tid;
+      document.getElementById('tdepartment_id').value = deptid;
+      document.getElementById('temployee_id').value = empid;
+      document.getElementById('ttdate').value = tdate;
+      document.getElementById('tworking_hours').value = tworkinghours;
+      document.getElementById('tstart_time').value = tstartime;
+      document.getElementById('tend_time').value = tendtime;
+    }
+
+    function populateModal_clientgroup(button) {
+      var client_idv = button.getAttribute('data-cgclient_id');
+      var industryv = button.getAttribute('data-cgindustry');
+      var company_namev = button.getAttribute('data-cgcompany_name');
+
+      document.getElementById('cdclient_id').value = client_idv;
+      document.getElementById('cdindustry').value = industryv;
+      document.getElementById('cdcompany_name').value = company_namev;
+    }
+    function populateModal_account(button) {
+      var account_numberv = button.getAttribute('data-accaccount_number');
+      var client_idv = button.getAttribute('data-accclient_id');
+      var account_namev = button.getAttribute('data-accaccount_name');
+      var account_rolev = button.getAttribute('data-accaccount_role');
+      var locationv = button.getAttribute('data-acclocationdata');
+      var abnv = button.getAttribute('data-accabndata');
+
+      document.getElementById('accaccount_number').value = account_numberv;
+      document.getElementById('accclient_id').value = client_idv;
+      document.getElementById('accaccount_name').value = account_namev;
+      document.getElementById('accaccount_role').value = account_rolev;
+      document.getElementById('acclocationdata').value = locationv;
+      document.getElementById('accabndata').value = abnv;
+    }
+    function populateModal_clientcontact(button) {
+      var contact_idv = button.getAttribute('data-ccontact_id');
+      var account_numberv = button.getAttribute('data-caccount_number');
+      var namev = button.getAttribute('data-cname');
+      var phone_numberv = button.getAttribute('data-cphone_number');
+      var emailv = button.getAttribute('data-cemail');
+      var addressv = button.getAttribute('data-caddress');
+      var rolev = button.getAttribute('data-crole');
+
+      document.getElementById('ccontact_id').value = contact_idv;
+      document.getElementById('caccount_number').value = account_numberv;
+      document.getElementById('cname').value = namev;
+      document.getElementById('cphone_number').value = phone_numberv;
+      document.getElementById('cemail').value = emailv;
+      document.getElementById('caddress').value = addressv;
+      document.getElementById('crole').value = rolev;
+    }
+    function populateModal_deals(button) {
+      var deal_idv = button.getAttribute('data-ddeal_id');
+      var deal_namev = button.getAttribute('data-ddeal_name');
+      var account_numberv = button.getAttribute('data-daccount_number');
+      var pricingv = button.getAttribute('data-dpricing');
+      var durationv = button.getAttribute('data-dduration');
+      var SLAsv = button.getAttribute('data-dSLAs');
+      var deal_statusv = button.getAttribute('data-ddeal_status');
+
+      document.getElementById('ddeal_id').value = deal_idv;
+      document.getElementById('ddeal_name').value = deal_namev;
+      document.getElementById('daccount_number').value = account_numberv;
+      document.getElementById('dpricing').value = pricingv;
+      document.getElementById('dduration').value = durationv;
+      document.getElementById('dSLAs').value = SLAsv;
+      document.getElementById('ddeal_status').value = deal_statusv;
+    }
+    function populateModal_Contract(button) {
+      var contract_idv = button.getAttribute('data-ccontract_id');
+      var deal_idv = button.getAttribute('data-cdeal_id');
+      var contract_type = button.getAttribute('data-ccontract_type');
+      var start_date = button.getAttribute('data-cstart_date');
+
+      document.getElementById('ccontract_id').value = contract_idv;
+      document.getElementById('cdeal_id').value = deal_idv;
+      document.getElementById('ccontract_type').value = contract_type;
+      document.getElementById('cstart_date').value = start_date;
+    }
+    function populateModal_MaterialSupplier(button) {
+      var msupplier_idv = button.getAttribute('data-msupplier_id');
+      var msupplier_namev = button.getAttribute('data-msupplier_name');
+      var mbusiness_namev = button.getAttribute('data-mbusiness_name');
+      var mbusiness_addressv = button.getAttribute('data-mbusiness_address');
+      var mphone_support_queriesv = button.getAttribute('data-mphone_support_queries');
+      var memail_support_queriesv = button.getAttribute('data-memail_support_queries');
+      var material_supply_categoryv = button.getAttribute('data-material_supply_category');
+
+      document.getElementById('msupplier_id').value = msupplier_idv;
+      document.getElementById('msupplier_name').value = msupplier_namev;
+      document.getElementById('mbusiness_name').value = mbusiness_namev;
+      document.getElementById('mbusiness_address').value = mbusiness_addressv;
+      document.getElementById('mphone_support_queries').value = mphone_support_queriesv;
+      document.getElementById('material_supply_category').value = material_supply_categoryv;
+    }
+    function populateModal_StoresBranchNames(button) {
+      var sABNv = button.getAttribute('data-sABN');
+      var ssupplier_idv = button.getAttribute('data-ssupplier_id');
+      var sstore_idv = button.getAttribute('data-sstore_id');
+      var sbranch_namev = button.getAttribute('data-sbranch_name');
+      var saddressv = button.getAttribute('data-saddress');
+      var sregion_of_operationv = button.getAttribute('data-sregion_of_operation');
+      var sbranch_contactv = button.getAttribute('data-sbranch_contact');
+      var sphonev = button.getAttribute('data-sphone');
+      var semailv = button.getAttribute('data-semail');
+
+      document.getElementById('sABN').value = sABNv;
+      document.getElementById('ssupplier_id').value = ssupplier_idv;
+      document.getElementById('sstore_id').value = sstore_idv;
+      document.getElementById('sbranch_name').value = sbranch_namev;
+      document.getElementById('saddress').value = saddressv;
+      document.getElementById('sregion_of_operation').value = sregion_of_operationv;
+      document.getElementById('sbranch_contact').value = sbranch_contactv;
+      document.getElementById('sphone').value = sphonev;
+      document.getElementById('semail').value = semailv;
+    }
+    function populateModal_MaterialInvoice(button) {
+      var minvoice_idv = button.getAttribute('data-minvoice_id');
+      var mABNv = button.getAttribute('data-mABN');
+      var mitemsv = button.getAttribute('data-mitems');
+      var mquantityv = button.getAttribute('data-mquantity');
+      var mindividual_pricev = button.getAttribute('data-mindividual_price');
+      var mapproverv = button.getAttribute('data-mapprover');
+
+      document.getElementById('minvoice_id').value = minvoice_idv;
+      document.getElementById('mABN').value = mABNv;
+      document.getElementById('mitems').value = mitemsv;
+      document.getElementById('mquantity').value = mquantityv;
+      document.getElementById('mindividual_price').value = mindividual_pricev;
+      document.getElementById('mapprover').value = mapproverv;
+    }
+    function populateModal_MaterialInvoiceview(button) {
+      var mminvoice_idv = button.getAttribute('data-mminvoice_id');
+      var mmABNv = button.getAttribute('data-mmABN');
+      var mmitemsv = button.getAttribute('data-mmitems');
+      var mmquantityv = button.getAttribute('data-mmquantity');
+      var mmindividual_pricev = button.getAttribute('data-mmindividual_price');
+      var mmtotal_pricev = button.getAttribute('data-mmtotal_price');
+      var mmapproverv = button.getAttribute('data-mmapprover');
+      var mmdate_timev = button.getAttribute('data-mmdate_time');
+
+      document.getElementById('mminvoice_id').value = mminvoice_idv;
+      document.getElementById('mmdate_time').value = mmdate_timev;
+      document.getElementById('mmABN').value = mmABNv;
+      document.getElementById('mmitems').value = mmitemsv;
+      document.getElementById('mmquantity').value = mmquantityv;
+      document.getElementById('mmindividual_price').value = mmindividual_pricev;
+      document.getElementById('mmtotal_price').value = mmtotal_pricev;
+      document.getElementById('mmapprover').value = mmapproverv;
+      document.getElementById('mmtotal_price').value = mmtotal_pricev;
+      
+    }
+  </script>
+
+  <script>
+    setTimeout(function() {
+        var alertElement = document.getElementById('floatingAlert');
+        var bsAlert = new bootstrap.Alert(alertElement);
+        bsAlert.close();
+    }, 8000); // 3 seconds
+  </script>
+
+
+
+</body>
+
+</html>

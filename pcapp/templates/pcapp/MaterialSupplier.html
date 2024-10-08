@@ -1,0 +1,250 @@
+{% extends 'pcapp/base.html' %}
+{% load static %}
+
+{% block title %}
+{{instance.title}}
+{% endblock title%}
+{% block style %}
+{% endblock style %}
+
+{% block script %}  
+
+{% endblock script %}
+
+{% block mainbody %}
+
+
+  <div class="pagetitle">
+    <h1>Material Suppler</h1>
+   
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index/">Home</a></li>
+        <li class="breadcrumb-item">Material</li>
+        <li class="breadcrumb-item active"><a href="/MaterialSupplier/">Material Supplier</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+    
+ 
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+
+            <div class="border-0 mb-4">
+              <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                  <h5 class="fw-bold mb-0"> Material Supplier Details </h5>
+                  <div class="col-auto d-flex w-sm-100">
+                      <button type="button" class="btn btn-dark btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#depadd"><i class="icofont-plus-circle me-2 fs-6"></i>Add Supplier Details</button>
+                  </div>
+                </div>
+            </div>
+
+            
+              <!-- Add Supplier Details-->
+              <div class="modal fade" id="depadd" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title  fw-bold" id="depaddLabel"> Add Material Supplier </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/addMaterialSupplier/" method="POST">
+                      {% csrf_token %} 
+                      <div class="modal-body p-5">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="supplier_name" class="form-label">Supplier Name</label>
+                            <input type="text" name="supplier_name" class="form-control" id="supplier_name" required>
+                            <div class="invalid-feedback">Please, enter Supplier Name !</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="business_name" class="form-label">Business Name</label>
+                            <input type="text" name="business_name" class="form-control" id="business_name" required>
+                            <div class="invalid-feedback">Please, enter Business name!</div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="business_address" class="form-label">Business Address</label>
+                            <input type="text" name="business_address" class="form-control" id="business_address" required>
+                            <div class="invalid-feedback">Please, enter Business Address!</div>
+                        </div>
+                        <div class="col-12">
+                          <label for="email_support_queries" class="form-label">Email</label>
+                          <div class="input-group has-validation">
+                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            <input type="email" name="email_support_queries" class="form-control" id="email_support_queries" required>
+                            <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                              <label for="phone_support_queries" class="form-label">Phone No.</label>
+                              <input type="text" name="phone_support_queries" class="form-control" id="phone_support_queries" required>
+                              <div class="invalid-feedback">Please, enter valid Phone Number!</div>
+                            </div>
+                            <div class="col-6">
+                              <label for="material_supply_category" class="form-label">Supply Category</label>
+                              <input type="text" name="material_supply_category" class="form-control" id="material_supply_category" required>
+                              <div class="invalid-feedback">Please, enter Material Supply Category!</div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                        </br><button class="btn btn-outline-primary" type="submit">Add Material Supplier</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                </div>
+              </div>
+              <!-- End of Add employee-->
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Supplier ID</th>
+                      <th>Supplier Name</th> 
+                      <th>Business Name</th> 
+                      <th>Business Address</th> 
+                      <th>Phone No.</th> 
+                      <th>Email</th>   
+                      <th>supply_category</th>  
+                      <th>Last Updated</th>  
+                      <th>First Created</th>  
+                      <th>Actions</th>  
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for md in materialdata %}
+                  <tr>
+                      <td>
+                          <span class="fw-bold">{{md.supplier_id}}</span>
+                      </td>
+                     <td>
+                         <span class="fw-bold ms-1">{{md.supplier_name}}</span>
+                     </td>
+                     <td>
+                      {{md.business_name}}
+                     </td>
+                     <td>
+                      {{md.business_address}}
+                     </td>
+                     <td>
+                      {{md.phone_support_queries}}
+                     </td>
+                     <td>
+                      {{md.email_support_queries}}
+                     </td>
+                     <td>
+                      {{md.material_supply_category}}
+                     </td>
+                     <td>
+                      {{md.updated}}
+                     </td>
+                     <td>
+                      {{md.Created_on}}
+                     </td>
+                      <td>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn bi-pen" data-bs-toggle="modal" data-bs-target="#depedit" data-msupplier_id="{{md.supplier_id}}" data-msupplier_name="{{md.supplier_name}}" data-mbusiness_name="{{md.business_name}}" data-mbusiness_address="{{md.business_address}}" data-mphone_support_queries="{{md.phone_support_queries}}" data-memail_support_queries="{{md.email_support_queries}}" data-mmaterial_supply_category="{{md.material_supply_category}}" onclick="populateModal_MaterialSupplier(this)">
+                              <i class="icofont-edit text-success"></i>
+                            </button>
+                            <form action="/delete_MaterialSupplier/{{md.supplier_id}}/" method="POST" enctype='multipart/form-data'> 
+                              {% csrf_token %}
+                              <button type="submit" onclick="return confirm('Are you sure you want to Delete this Employee ?');" class="btn bi-trash"><i class="icofont-ui-delete text-danger"></i></button>
+                            </form>
+                          </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+
+            </table>
+              <!-- Edit Employee-->
+              <div class="modal fade" id="depedit" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title  fw-bold" id="depaddLabel"> Edit  Empoloyee Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/editMaterialSupplier/" method="POST">
+                  {% csrf_token %} 
+                  <div class="modal-body p-5">
+                    <div class="row">
+                        
+                        <div class="col-12">
+                            <label for="supplier_id" class="form-label">Supplier ID</label>
+                            <input type="text" name="supplier_id" class="form-control" id="msupplier_id" required>
+                            <div class="invalid-feedback">Please, enter Business Address!</div>
+                        </div>
+                        <div class="col-6">
+                          <label for="supplierName" class="form-label">Supplier Name</label>
+                          <input type="text" name="supplier_name" class="form-control" id="msupplier_name" required>
+                          <div class="invalid-feedback">Please, enter Supplier Name !</div>
+                        </div>
+                        <div class="col-6">
+                          <label for="business_name" class="form-label">Business Name</label>
+                          <input type="text" name="business_name" class="form-control" id="mbusiness_name" required>
+                          <div class="invalid-feedback">Please, enter Business name!</div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                          <label for="business_address" class="form-label">Business Address</label>
+                          <input type="text" name="business_address" class="form-control" id="mbusiness_address" required>
+                          <div class="invalid-feedback">Please, enter Business Address!</div>
+                      </div>
+                      <div class="col-12">
+                        <label for="email_support_queries" class="form-label">Email</label>
+                        <div class="input-group has-validation">
+                          <span class="input-group-text" id="inputGroupPrepend">@</span>
+                          <input type="email" name="email_support_queries" class="form-control" id="memail_support_queries" required>
+                          <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                        </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-6">
+                            <label for="phone_support_queries" class="form-label">Phone No.</label>
+                            <input type="text" name="phone_support_queries" class="form-control" id="mphone_support_queries" required>
+                            <div class="invalid-feedback">Please, enter valid Phone Number!</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="material_supply_category" class="form-label">Supply Category</label>
+                            <input type="text" name="material_supply_category" class="form-control" id="mmaterial_supply_category" required>
+                            <div class="invalid-feedback">Please, enter Material Supply Category!</div>
+                          </div>
+                      </div>
+                    <div class="col-12 text-center">
+                    </br><button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+                </div>
+              </div> 
+
+              
+
+
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+   
+    
+  </section>
+
+
+  
+{% endblock mainbody %}
+{% block footer %}
+  
+
+{% endblock footer %}
+ 

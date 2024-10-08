@@ -1,0 +1,243 @@
+{% extends 'pcapp/base.html' %}
+{% load static %}
+
+{% block title %}
+{{instance.title}}
+{% endblock title%}
+{% block style %}
+{% endblock style %}
+
+{% block script %}  
+
+{% endblock script %}
+
+{% block mainbody %}
+
+
+<div class="pagetitle">
+    <h1>Account Details</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index/">Home</a></li>
+        <li class="breadcrumb-item">Client and Contract</li>
+        <li class="breadcrumb-item active"><a href="/Account/">Account</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+
+    
+ 
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+
+            <div class="border-0 mb-4">
+              <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                  <h5 class="fw-bold mb-0">Client Account Details </h5>
+                  <div class="col-auto d-flex w-sm-100">
+                      <button type="button" class="btn btn-dark btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#depadd"><i class="icofont-plus-circle me-2 fs-6"></i>Add Account</button>
+                  </div>
+                </div>
+            </div>
+
+            
+              <!-- Add Account-->
+              <div class="modal fade" id="depadd" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title  fw-bold" id="depaddLabel"> Add Client Account </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/addAccount/" method="POST">
+                      {% csrf_token %} 
+                      <div class="modal-body p-5">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="account_number" class="form-label">Account Number</label>
+                            <input type="text" name="account_number" class="form-control" id="account_number" required>
+                            <div class="invalid-feedback">Please, Enter Account Number !</div>
+                          </div>                          
+                          <div class="col-6">
+                            <label for="client_id" class="form-label">Client ID</label>
+                            <select class="form-select" name="client_id" id="client_id" aria-label="Floating label select example" required>
+                                <option selected disabled value="">select Client ID</option>
+                                {% for cgd in clientgroupdata %}
+                                <option value={{cgd.client_id}}>{{cgd.client_id}}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="account_name" class="form-label">Account Name</label>
+                            <input type="text" name="account_name" class="form-control" id="account_name" required>
+                            <div class="invalid-feedback">Please, Enter Account Name !</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="locationdata" class="form-label">Location</label>
+                            <input type="text" name="locationdata" class="form-control" id="locationdata" required>
+                            <div class="invalid-feedback">Please, Enter Location !</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                              <label for="account_role" class="form-label">Account Role</label>
+                              <input type="text" name="account_role" class="form-control" id="account_role" required>
+                              <div class="invalid-feedback">Please, Enter Account Role !</div>
+                            </div>
+                            <div class="col-6">
+                              <label for="abn" class="form-label">ABN</label>
+                              <input type="number" name="abn" class="form-control" id="abn" required>
+                              <div class="invalid-feedback">Please, enter 11 digit ABN !</div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                        </br><button class="btn btn-outline-primary" type="submit">Add Account</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                </div>
+              </div>
+              <!-- End of Add Account-->
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Account Number</th>
+                      <th>Client</th>
+                      <th>Account Name</th> 
+                      <th>Account Role</th> 
+                      <th>Location</th>   
+                      <th>ABN</th>  
+                      <th>Last Updated</th>  
+                      <th>First Created</th>  
+                      <th>Actions</th>  
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for ad in accountdata %}
+                  <tr>
+                      <td>
+                          <span class="fw-bold">{{ad.account_number}}</span>
+                      </td>
+                      <td>
+                          <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="ID:{{ad.client_id.client_id}}, Name:{{ad.client_id.industry}}, Company Name:{{ad.client_id.company_name}}" class="fw-bold">{{ad.client_id.company_name}}</span>
+                      </td>
+                     <td>
+                      {{ad.account_name}}
+                     </td>
+                     <td>
+                      {{ad.account_role}}
+                     </td>
+                     <td>
+                      {{ad.location}}
+                     </td>
+                     <td>
+                      {{ad.abn}}
+                     </td>
+                     <td>
+                      {{ad.updated}}
+                     </td>
+                     <td>
+                      {{ad.Created_on}}
+                     </td>
+                      <td>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn bi-pen" data-bs-toggle="modal" data-bs-target="#depedit" data-accaccount_number="{{ad.account_number}}"  data-accclient_id="{{ad.client_id.client_id}}" data-accaccount_name="{{ad.account_name}}" data-accaccount_role="{{ad.account_role}}" data-acclocationdata="{{ad.location}}"  data-accabndata="{{ad.abn}}" onclick="populateModal_account(this)">
+                              <i class="icofont-edit text-success"></i>
+                            </button>
+                            <form action="/delete_Account/{{ad.account_number}}/" method="POST" enctype='multipart/form-data'> 
+                              {% csrf_token %}
+                              <button type="submit" onclick="return confirm('Are you sure you want to Delete this Employee ?');" class="btn bi-trash"><i class="icofont-ui-delete text-danger"></i></button>
+                            </form>
+                          </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+
+            </table>
+              <!-- Edit Account-->
+              <div class="modal fade" id="depedit" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title  fw-bold" id="depaddLabel"> Edit  Empoloyee Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/editAccount/" method="POST">
+                  {% csrf_token %} 
+                  <div class="modal-body p-5">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="account_number" class="form-label">Account Number</label>
+                            <input type="text" name="account_number" class="form-control" id="accaccount_number" readonly>
+                            <div class="invalid-feedback">Please, Enter Account Number !</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="client_id" class="form-label">Client ID</label>
+                            <input list="datalistOptions_employee" name="client_id" class="form-control" id="accclient_id" readonly>
+                            <div class="invalid-feedback">Please, Select client ID !</div>
+                            <datalist id="datalistOptions_employee">
+                                {% for cgd in clientgroupdata %}
+                                <option value={{cgd.client_id}}>
+                                {% endfor %}
+                            </datalist>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="account_name" class="form-label">Account Name</label>
+                            <input type="text" name="account_name" class="form-control" id="accaccount_name" required>
+                            <div class="invalid-feedback">Please, Enter Account Name !</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="locationdata" class="form-label">Location</label>
+                            <input type="text" name="locationdata" class="form-control" id="acclocationdata" required>
+                            <div class="invalid-feedback">Please, Enter Location !</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                              <label for="account_role" class="form-label">Account Role</label>
+                              <input type="text" name="account_role" class="form-control" id="accaccount_role" required>
+                              <div class="invalid-feedback">Please, Enter Account Role !</div>
+                            </div>
+                            <div class="col-6">
+                              <label for="abn" class="form-label">ABN</label>
+                              <input type="number" name="abndata" class="form-control" id="accabndata" required>
+                              <div class="invalid-feedback">Please, enter 11 digit ABN !</div>
+                            </div>
+                        </div>
+                    <div class="col-12 text-center">
+                    </br><button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+                </div>
+              </div> 
+
+              
+
+
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+   
+    
+  </section>
+
+
+  
+{% endblock mainbody %}
+{% block footer %}
+  
+
+{% endblock footer %}
+ 

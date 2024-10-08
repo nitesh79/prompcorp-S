@@ -1,0 +1,184 @@
+{% extends 'pcapp/base.html' %}
+{% load static %}
+
+{% block title %}
+{{instance.title}}
+{% endblock title%}
+{% block style %}
+{% endblock style %}
+
+{% block script %}  
+
+{% endblock script %}
+
+{% block mainbody %}
+
+  <div class="pagetitle">
+    <h1>Client Group Details</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index/">Home</a></li>
+        <li class="breadcrumb-item">Client and Contract</li>
+        <li class="breadcrumb-item active"><a href="/ClientGroup/">Client Group</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+    
+ 
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+
+            <div class="border-0 mb-4">
+              <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                  <h5 class="fw-bold mb-0"> Client Group Details </h5>
+                  <div class="col-auto d-flex w-sm-100">
+                      <button type="button" class="btn btn-dark btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#depadd"><i class="icofont-plus-circle me-2 fs-6"></i>Add ClientGroup</button>
+                  </div>
+                </div>
+            </div>
+
+            
+              <!-- Add ClientGroup-->
+              <div class="modal fade" id="depadd" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title  fw-bold" id="depaddLabel"> Add ClientGroup </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/addClientGroup/" method="POST">
+                      {% csrf_token %} 
+                      <div class="modal-body p-5">
+                          <div class="col-12">
+                            <label for="client_id" class="form-label">Client ID</label>
+                            <input type="text" name="client_id" class="form-control" id="client_id" required>
+                            <div class="invalid-feedback">Please, enter Client ID !</div>
+                          </div>
+                          <div class="col-12">
+                            <label for="industry" class="form-label">Industry</label>
+                            <input type="text" name="industry" class="form-control" id="industry" required>
+                            <div class="invalid-feedback">Please, enter Industry name!</div>
+                          </div>
+                          <div class="col-12">
+                            <label for="company_name" class="form-label">Company Name</label>
+                            <input type="text" name="company_name" class="form-control" id="company_name" required>
+                            <div class="invalid-feedback">Please, enter Company Name!</div>
+                          </div>
+                        <div class="col-12 text-center">
+                        </br><button class="btn btn-outline-primary" type="submit">Add ClientGroup</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                </div>
+              </div>
+              <!-- End of Add ClientGroup-->
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Client ID</th>
+                      <th>Industry</th> 
+                      <th>Company Name</th>   
+                      <th>Last Updated</th>   
+                      <th>First Created</th>   
+                      <th>Actions</th>  
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for cg in clientgroupdata %}
+                  <tr>
+                      <td>
+                          <span class="fw-bold">{{cg.client_id}}</span>
+                      </td>
+                     <td>
+                         <span class="fw-bold ms-1">{{cg.industry}}</span>
+                     </td>
+                     <td>
+                      {{cg.company_name}}
+                     </td>
+                     <td>
+                      {{cg.updated}}
+                     </td>
+                     <td>
+                      {{cg.Created_on}}
+                     </td>
+                      <td>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn bi-pen" data-bs-toggle="modal" data-bs-target="#depedit" data-cgclient_id="{{cg.client_id}}" data-cgindustry="{{cg.industry}}" data-cgcompany_name="{{cg.company_name}}"  onclick="populateModal_clientgroup(this)">
+                              <i class="icofont-edit text-success"></i>
+                            </button>
+                            <form action="/delete_ClientGroup/{{cg.client_id}}/" method="POST" enctype='multipart/form-data'> 
+                              {% csrf_token %}
+                              <button type="submit" onclick="return confirm('Are you sure you want to Delete this Department ?');" class="btn bi-trash"><i class="icofont-ui-delete text-danger"></i></button>
+                            </form>
+                          </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+
+            </table>
+              <!-- Edit Department-->
+              <div class="modal fade" id="depedit" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title  fw-bold" id="depaddLabel"> Edit ClientGroup Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/editClientGroup/" method="POST">
+                  {% csrf_token %} 
+                  <div class="modal-body p-5">
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="client_id" class="form-label">Client ID</label>
+                        <input type="text" name="client_id" id="cdclient_id" class="form-control" readonly>
+                        <div class="invalid-feedback">Please, enter Client ID !</div>
+                      </div>
+                      <div class="col-6">
+                        <label for="industry" class="form-label">Industry Name</label>
+                        <input type="text" name="industry" id="cdindustry" class="form-control" required>
+                        <div class="invalid-feedback">Please, enter industry name!</div>
+                      </div>
+                      <div class="col-12">
+                        <label for="company_name" class="form-label">Company Name</label>
+                        <input type="text" name="company_name" id="cdcompany_name" class="form-control" required>
+                        <div class="invalid-feedback">Please, enter Company name!</div>
+                      </div>
+                      
+                    <div class="col-12 text-center">
+                    </br><button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+                </div>
+              </div> 
+
+              
+
+
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+   
+    
+  </section>
+
+
+  
+{% endblock mainbody %}
+{% block footer %}
+  
+
+{% endblock footer %}
+ 

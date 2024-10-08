@@ -1,0 +1,263 @@
+{% extends 'pcapp/base.html' %}
+{% load static %}
+
+{% block title %}
+{{instance.title}}
+{% endblock title%}
+{% block style %}
+{% endblock style %}
+
+{% block script %}  
+
+{% endblock script %}
+
+{% block mainbody %}
+
+  <div class="pagetitle">
+    <h1>Client Contact Details</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index/">Home</a></li>
+        <li class="breadcrumb-item">Client and Contract</li>
+        <li class="breadcrumb-item active"><a href="/ClientContact/">Client Contact</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+    
+ 
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+
+            <div class="border-0 mb-4">
+              <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                  <h5 class="fw-bold mb-0"> Client Contact Details </h5>
+                  <div class="col-auto d-flex w-sm-100">
+                      <button type="button" class="btn btn-dark btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#depadd"><i class="icofont-plus-circle me-2 fs-6"></i>Add Contact</button>
+                  </div>
+                </div>
+            </div>
+
+            
+              <!-- Add Client contact-->
+              <div class="modal fade" id="depadd" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title  fw-bold" id="depaddLabel"> Add Client Contact </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/addClientContact/" method="POST">
+                      {% csrf_token %} 
+                      <div class="modal-body p-5">
+                         <div class="row">
+                          <div class="col-6">
+                            <label for="contact_id" class="form-label">Contact ID</label>
+                            <input type="text" name="contact_id" class="form-control" id="contact_id" required>
+                            <div class="invalid-feedback">Please, enter Contact ID !</div>
+                          </div>
+                          
+                          <div class="col-6">
+                            <label for="account_number" class="form-label">Account Number</label>
+                            <select class="form-select" name="account_number" id="account_number" aria-label="Floating label select example" required>
+                                <option selected disabled value="">select Account Number</option>
+                                {% for accdata in accountdata %}
+                                <option value={{accdata.account_number}}>{{accdata.account_number}}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+
+                         </div>
+                         <div class="row">
+                          <div class="col-6">
+                            <label for="name" class="form-label">Contact Name</label>
+                            <input type="text" name="name" class="form-control" id="name" required>
+                            <div class="invalid-feedback">Please, enter Contact Name!</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="role" class="form-label">Role</label>
+                            <input type="text" name="role" class="form-control" id="role" required>
+                            <div class="invalid-feedback">Please, enter Role!</div>
+                          </div>
+                         </div>
+                          <div class="col-12">
+                            <label for="phone_number" class="form-label">Phone Number</label>
+                            <input type="text" name="phone_number" class="form-control" id="phone_number" required>
+                            <div class="invalid-feedback">Please, enter Phone Number!</div>
+                          </div>
+                          <div class="col-12">
+                            <label for="email" class="form-label">Client Contact Email</label>
+                            <div class="input-group has-validation">
+                              <span class="input-group-text" id="inputGroupPrepend">@</span>
+                              <input type="email" name="email" class="form-control" id="email" required>
+                              <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                          </div>
+                          </div>
+                          <div class="col-12">
+                            <label for="address" class="form-label">Contact Address</label>
+                            <input type="text" name="address" class="form-control" id="address" required>
+                            <div class="invalid-feedback">Please, enter Contact Address!</div>
+                          </div>
+                        <div class="col-12 text-center">
+                        </br><button class="btn btn-outline-primary" type="submit">Add ClientContact</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                </div>
+              </div>
+              <!-- End of Add ClientGroup-->
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Contact ID</th>
+                      <th>Account Number</th> 
+                      <th>Name</th>   
+                      <th>Phone Number</th>   
+                      <th>Email</th>   
+                      <th>Address</th>   
+                      <th>Role</th>   
+                      <th>Last Updated</th>   
+                      <th>First Created</th>   
+                      <th>Actions</th>  
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for ccontact in clientcontactdata %}
+                  <tr>
+                      <td>
+                          <span class="fw-bold">{{ccontact.contact_id}}</span>
+                      </td>
+                     <td>
+                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Account No.:{{ccontact.account_number.account_number}}, Client ID:{{ccontact.account_number.client_id.client_id}}, Account Name:{{ccontact.account_number.account_name}}, Account Role:{{ccontact.account_number.account_role}}, Location:{{ccontact.account_number.location}}, ABN:{{ccontact.account_number.abn}}" class="fw-bold">{{ccontact.account_number.account_number}}</span>
+                    </td>
+                     <td>
+                      {{ccontact.name}}
+                     </td>
+                     <td>
+                      {{ccontact.phone_number}}
+                     </td>
+                     <td>
+                      {{ccontact.email}}
+                     </td>
+                     <td>
+                      {{ccontact.address}}
+                     </td>
+                     <td>
+                      {{ccontact.role}}
+                     </td>
+                     <td>
+                      {{ccontact.updated}}
+                     </td>
+                     <td>
+                      {{ccontact.Created_on}}
+                     </td>
+                      <td>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn bi-pen" data-bs-toggle="modal" data-bs-target="#depedit" data-ccontact_id="{{ccontact.contact_id}}" data-caccount_number="{{ccontact.account_number}}" data-cname="{{ccontact.name}}"  data-cphone_number="{{ccontact.phone_number}}"  data-cemail="{{ccontact.email}}"  data-caddress="{{ccontact.address}}"   data-crole="{{ccontact.role}}"  onclick="populateModal_clientcontact(this)">
+                              <i class="icofont-edit text-success"></i>
+                            </button>
+                            <form action="/delete_ClientContact/{{ccontact.contact_id}}/" method="POST" enctype='multipart/form-data'> 
+                              {% csrf_token %}
+                              <button type="submit" onclick="return confirm('Are you sure you want to Delete this Department ?');" class="btn bi-trash"><i class="icofont-ui-delete text-danger"></i></button>
+                            </form>
+                          </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+
+            </table>
+              <!-- Edit Department-->
+              <div class="modal fade" id="depedit" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title  fw-bold" id="depaddLabel"> Edit ClientGroup Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/editClientContact/" method="POST">
+                    {% csrf_token %} 
+                    <div class="modal-body p-5">
+                       <div class="row">
+                        <div class="col-6">
+                          <label for="contact_id" class="form-label">Contact ID</label>
+                          <input type="text" name="contact_id" class="form-control" id="ccontact_id" readonly>
+                          <div class="invalid-feedback">Please, enter Contact ID !</div>
+                        </div>
+                        <div class="col-6">
+                          <label for="account_number" class="form-label">Account Number</label>
+                          <input list="datalistOptions_account" name="account_number" class="form-control" id="caccount_number" readonly>
+                          <div class="invalid-feedback">Please, select Account Number!</div>
+                          <datalist id="datalistOptions_account">
+                              {% for accdata in accountdata %}
+                              <option value={{accdata.account_number}}>
+                              {% endfor %}
+                          </datalist>
+                        </div>
+                       </div>
+                       <div class="row">
+                        <div class="col-6">
+                          <label for="name" class="form-label">Contact Name</label>
+                          <input type="text" name="name" class="form-control" id="cname" required>
+                          <div class="invalid-feedback">Please, enter Contact Name!</div>
+                        </div>
+                        <div class="col-6">
+                          <label for="role" class="form-label">Role</label>
+                          <input type="text" name="role" class="form-control" id="crole" required>
+                          <div class="invalid-feedback">Please, enter Role!</div>
+                        </div>
+                       </div>
+                        <div class="col-12">
+                          <label for="phone_number" class="form-label">Phone Number</label>
+                          <input type="text" name="phone_number" class="form-control" id="cphone_number" required>
+                          <div class="invalid-feedback">Please, enter Phone Number!</div>
+                        </div>
+                        <div class="col-12">
+                          <label for="email" class="form-label">Client Contact Email</label>
+                          <div class="input-group has-validation">
+                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            <input type="email" name="email" class="form-control" id="cemail" required>
+                            <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                        </div>
+                        </div>
+                        <div class="col-12">
+                          <label for="address" class="form-label">Contact Address</label>
+                          <input type="text" name="address" class="form-control" id="caddress" required>
+                          <div class="invalid-feedback">Please, enter Contact Address!</div>
+                        </div>
+                      <div class="col-12 text-center">
+                      </br><button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                      </div>
+                    </div>
+                </form>
+                </div>
+                </div>
+              </div> 
+
+              
+
+
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+   
+    
+  </section>
+
+
+  
+{% endblock mainbody %}
+{% block footer %}
+  
+
+{% endblock footer %}
+ 

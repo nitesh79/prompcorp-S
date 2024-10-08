@@ -1,0 +1,282 @@
+{% extends 'pcapp/base.html' %}
+{% load static %}
+
+{% block title %}
+{{instance.title}}
+{% endblock title%}
+{% block style %}
+{% endblock style %}
+
+{% block script %}  
+
+{% endblock script %}
+
+{% block mainbody %}
+
+
+  <div class="pagetitle">
+    <h1>Stores Branch Names</h1>
+   
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/index/">Home</a></li>
+        <li class="breadcrumb-item">Material</li>
+        <li class="breadcrumb-item active"><a href="/MaterialInvoice/">Material Invoice</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+    
+ 
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+
+            <div class="border-0 mb-4">
+              <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                  <h5 class="fw-bold mb-0"> Material Invoice Details </h5>
+                  <div class="col-auto d-flex w-sm-100">
+                      <button type="button" class="btn btn-dark btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#depadd"><i class="icofont-plus-circle me-2 fs-6"></i>Add Material Invoice</button>
+                  </div>
+                </div>
+            </div>
+
+            
+              <!-- Add Supplier Details-->
+              <div class="modal fade" id="depadd" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title  fw-bold" id="depaddLabel"> Add Material Invoice Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/addMaterialInvoice/" method="POST">
+                      {% csrf_token %} 
+                      <div class="modal-body p-5">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="items" class="form-label">Items</label>
+                            <input type="text" name="items" class="form-control" id="items" required>
+                            <div class="invalid-feedback">Please, enter Items !</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="ABN" class="form-label">ABN</label>
+                            <select class="form-select" name="ABN" id="ABN" aria-label="Floating label select example" required>
+                                <option selected disabled value="">select ABN</option>
+                                {% for sbd in storebranchdata %}
+                                <option value={{sbd.ABN}}>{{sbd.ABN}}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="quantity" class="form-label">quantity</label>
+                            <input type="number" name="quantity" class="form-control" id="quantity" required>
+                            <div class="invalid-feedback">Please, enter quantity!</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="individual_price" class="form-label">Individual Price</label>
+                            <input type="number" name="individual_price" class="form-control" id="individual_price" required>
+                            <div class="invalid-feedback">Please, enter Individual Price!</div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <label for="approver" class="form-label">Approver</label>
+                          <input type="text" name="approver" class="form-control" id="approver" required>
+                          <div class="invalid-feedback">Please, enter approver!</div>
+                        </div>
+
+                        <div class="col-12 text-center">
+                        </br><button class="btn btn-outline-primary" type="submit">Add Material Invoice</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                </div>
+              </div>
+              <!-- End of Add employee-->
+            <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Invoice ID</th>
+                      <th>ABN</th> 
+                      <th>Items</th> 
+                      <th>Quantity</th> 
+                      <th>Individual Price</th> 
+                      <th>Total Price</th>   
+                      <th>Approver</th>  
+                      <th>Date Time</th> 
+                      <th>Actions</th>  
+                  </tr>
+              </thead>
+
+              <tbody>
+                {% for mid in matinvoicedata %}
+                  <tr>
+                      <td>
+                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#viewinvoice" data-mminvoice_id="{{mid.invoice_id}}" data-mmABN="{{mid.ABN.ABN}}" data-mmitems="{{mid.items}}" data-mmquantity="{{mid.quantity}}" data-mmindividual_price="{{mid.individual_price}}" data-mmtotal_price="{{mid.total_price}}" data-mmapprover="{{mid.approver}}"  data-mmdate_time="{{mid.date_time}}"   onclick="populateModal_MaterialInvoiceview(this)">
+                          <i class="icofont-edit text-success"></i><span class="fw-bold" >{{mid.invoice_id}}</span>
+                        </button>
+                      </td>
+                     <td>
+                         <span class="fw-bold ms-1">{{mid.ABN.ABN}}</span>
+                     </td>
+                     <td>
+                      {{mid.items}}
+                     </td>
+                     <td>
+                      {{mid.quantity}}
+                     </td>
+                     <td>
+                      {{mid.individual_price}}
+                     </td>
+                     <td>
+                      {{mid.total_price}}
+                     </td>
+                     <td>
+                      {{mid.approver}}
+                     </td>
+                     <td>
+                      {{mid.date_time}}
+                     </td>
+                      <td>
+                          <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn bi-pen" data-bs-toggle="modal" data-bs-target="#depedit" data-minvoice_id="{{mid.invoice_id}}" data-mABN="{{mid.ABN.ABN}}" data-mitems="{{mid.items}}" data-mquantity="{{mid.quantity}}" data-mindividual_price="{{mid.individual_price}}" data-mtotal_price="{{mid.total_price}}" data-mapprover="{{mid.approver}}"  data-mdate_time="{{mid.date_time}}"   onclick="populateModal_MaterialInvoice(this)">
+                              <i class="icofont-edit text-success"></i>
+                            </button>
+                            <form action="/delete_MaterialInvoice/{{mid.invoice_id}}/" method="POST" enctype='multipart/form-data'> 
+                              {% csrf_token %}
+                              <button type="submit" onclick="return confirm('Are you sure you want to Delete this Employee ?');" class="btn bi-trash"><i class="icofont-ui-delete text-danger"></i></button>
+                            </form>
+                          </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+
+            </table>
+              <!-- Edit Employee-->
+              <div class="modal fade" id="depedit" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title  fw-bold" id="depaddLabel"> Edit Material Invoice Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/editMaterialInvoice/" method="POST">
+                  {% csrf_token %} 
+                  <div class="modal-body p-5">
+                    <div class="row">
+                      <input type="invoice_id" name="invoice_id" class="form-control" id="minvoice_id" hidden>
+                          <div class="col-6">
+                            <label for="items" class="form-label">Items</label>
+                            <input type="text" name="items" class="form-control" id="mitems" required>
+                            <div class="invalid-feedback">Please, enter Items !</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="ABN" class="form-label">ABN</label>
+                            <input type="text" name="ABN" class="form-control" id="mABN" readonly>
+                            <div class="invalid-feedback">Please, enter ABN !</div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="quantity" class="form-label">quantity</label>
+                            <input type="text" name="quantity" class="form-control" id="mquantity" required>
+                            <div class="invalid-feedback">Please, enter quantity!</div>
+                          </div>
+                          <div class="col-6">
+                            <label for="individual_price" class="form-label">Individual Price</label>
+                            <input type="text" name="individual_price" class="form-control" id="mindividual_price" required>
+                            <div class="invalid-feedback">Please, enter Individual Price!</div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <label for="approver" class="form-label">Approver</label>
+                          <input type="text" name="approver" class="form-control" id="mapprover" required>
+                          <div class="invalid-feedback">Please, enter approver!</div>
+                        </div>
+                    <div class="col-12 text-center">
+                    </br><button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+                </div>
+              </div> 
+
+              <!-- View Invoice-->
+              <div class="modal fade" id="viewinvoice" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title  fw-bold" id="depaddLabel"> Invoice </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                  <div class="modal-body p-5">
+
+                    <div class="container mt-5">
+                      <div class="card">
+                          <div class="card-header ">
+                            <h2><span>Invoice ID: </span><input type="text" id="mminvoice_id" readonly style="border: none; background: none; display: inline;"> </h2>
+                          </div>
+                          <div class="card-body">
+                            <br>
+                              <h5><span>Date and Time: </span><input type="text" id="mmdate_time" readonly style="border: none; background: none; display: inline;"></h5>
+                              <h5><span>Store Branch (ABN): </span><input type="text" id="mmABN" readonly style="border: none; background: none; display: inline;"></h5>
+                              <table class="table table-striped">
+                                  <thead>
+                                      <tr>
+                                          <th>Item</th>
+                                          <th>Quantity</th>
+                                          <th>Individual Price</th>
+                                          <th>Total Price</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                          <td><input type="text" id="mmitems" readonly style="border: none; background: none; display: inline;"></td>
+                                          <td><input type="text" id="mmquantity" readonly style="border: none; background: none; display: inline;"></td>
+                                          <td><input type="text" id="mmindividual_price" readonly style="border: none; background: none; display: inline;"></td>
+                                          <td><input type="text" id="mmtotal_price" readonly style="border: none; background: none; display: inline;"></td>
+                                          
+                                      </tr>
+                                  </tbody>
+                                  
+                                  <br>
+                              </table>
+                              <br>
+                              <h5>Approver: <input type="text" id="mmapprover" readonly style="border: none; background: none; display: inline;"></h5>
+                          </div>
+                      </div>
+                  </div>
+                  
+
+                  </div>
+                </div>
+                </div>
+              </div> 
+
+
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+   
+    
+  </section>
+
+
+  
+{% endblock mainbody %}
+{% block footer %}
+  
+
+{% endblock footer %}
+ 
